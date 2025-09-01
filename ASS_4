@@ -1,0 +1,57 @@
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def insertSorted(head: Node, data: int) -> Node:
+    new_node = Node(data)
+    if not head:
+        new_node.next = new_node
+        return new_node
+
+    curr = head
+
+    while True:
+        # Case 2: Insert between two nodes
+        if curr.data <= data <= curr.next.data:
+            break
+        if curr.data > curr.next.data:  # biggest -> smallest transition
+            if data >= curr.data or data <= curr.next.data:
+                break
+        curr = curr.next
+        if curr == head:
+            break
+    new_node.next = curr.next
+    curr.next = new_node
+    if data < head.data:
+        head = new_node
+    return head
+def printCircular(head: Node):
+    if not head:
+        print("List is empty")
+        return
+    res = []
+    curr = head
+    while True:
+        res.append(str(curr.data))
+        curr = curr.next
+        if curr == head:
+            break
+    print("->".join(res))
+if __name__ == "__main__":
+    # Create circular list: 1->2->4->(back to 1)
+    head = Node(1)
+    second = Node(2)
+    third = Node(4)
+    head.next = second
+    second.next = third
+    third.next = head
+    print("Original list:")
+    printCircular(head)
+    head = insertSorted(head, 2)
+    print("\nAfter inserting 2:")
+    printCircular(head)
+    head = insertSorted(head, 5)
+    print("\nAfter inserting 5:")
+    printCircular(head)
