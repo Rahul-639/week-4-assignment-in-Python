@@ -1,0 +1,35 @@
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+def isCircular(head: Node) -> bool:
+    if head is None:
+        return True
+
+    curr = head.next
+    while curr is not None and curr != head:
+        curr = curr.next
+
+    return curr == head
+
+def printResult(head: Node):
+    print("Circular?" , isCircular(head))
+if __name__ == "__main__":
+    head1 = Node(1)
+    n2 = Node(2)
+    n3 = Node(3)
+    head1.next = n2
+    n2.next = n3
+    n3.next = head1  # last node points back to head
+    print("Example 1:")
+    printResult(head1)   # True
+    head2 = Node(1)
+    n2 = Node(2)
+    n3 = Node(3)
+    head2.next = n2
+    n2.next = n3
+    # n3.next = None by default
+    print("\nExample 2:")
+    printResult(head2)   # False
