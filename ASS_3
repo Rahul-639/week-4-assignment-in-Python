@@ -1,0 +1,44 @@
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+def reverseDLL(head: Node) -> Node:
+    if head is None:
+        return None
+
+    curr = head
+    prev_node = None
+    while curr:
+        prev_node = curr.prev
+        curr.prev = curr.next
+        curr.next = prev_node
+        curr = curr.prev  # move to "next" (original prev)
+    if prev_node:
+        head = prev_node.prev
+
+    return head
+def printList(head: Node):
+    res = []
+    curr = head
+    while curr:
+        res.append(str(curr.data))
+        curr = curr.next
+    print(" <-> ".join(res))
+if __name__ == "__main__":
+    head = Node(3)
+    second = Node(4)
+    third = Node(5)
+
+    head.next = second
+    second.prev = head
+    second.next = third
+    third.prev = second
+
+    print("Original list:")
+    printList(head)
+    head = reverseDLL(head)
+    print("\nReversed list:")
+    printList(head)
