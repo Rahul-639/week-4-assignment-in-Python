@@ -1,0 +1,60 @@
+
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        self.bottom = None
+
+def merge(a: Node, b: Node) -> Node:
+    if not a:
+        return b
+    if not b:
+        return a
+
+    if a.data < b.data:
+        result = a
+        result.bottom = merge(a.bottom, b)
+    else:
+        result = b
+        result.bottom = merge(a, b.bottom)
+
+    result.next = None  # ensure next is not used in flattened list
+    return result
+def flatten(root: Node) -> Node:
+    if not root or not root.next:
+        return root
+    root.next = flatten(root.next)
+
+    
+    root = merge(root, root.next)
+
+    return root
+
+def printList(node: Node):
+    res = []
+    while node:
+        res.append(str(node.data))
+        node = node.bottom
+    print(" -> ".join(res))
+if __name__ == "__main__":
+    # Example 1:
+    head = Node(5)
+    head.bottom = Node(7)
+    head.bottom.bottom = Node(8)
+    head.bottom.bottom.bottom = Node(30)
+
+    head.next = Node(10)
+    head.next.bottom = Node(20)
+
+    head.next.next = Node(19)
+    head.next.next.bottom = Node(22)
+    head.next.next.bottom.bottom = Node(50)
+
+    head.next.next.next = Node(28)
+    head.next.next.next.bottom = Node(35)
+    head.next.next.next.bottom.bottom = Node(40)
+    head.next.next.next.bottom.bottom.bottom = Node(45)
+
+    print("Flattened list:")
+    flat = flatten(head)
+    printList(flat)
